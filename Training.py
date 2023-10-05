@@ -94,7 +94,7 @@ train_data = train_data.prefetch(8)
 
 
 def embedding():
-    input = Input(shape=(100,100,3), name='input_image')
+    input = Input(shape=(100,100,3))
     
     c1 = Conv2D(64, (10,10), activation="relu")(input)
     p1 = MaxPooling2D(64, (2,2), padding="same")(c1)
@@ -110,7 +110,7 @@ def embedding():
     flatten = Flatten()(c4)
     output = Dense(4096, activation="sigmoid")(flatten)
     
-    return Model(inputs=[input], outputs=[output], name='embedding')  
+    return Model(inputs=[input], outputs=[output])  
 
 class Distance(Layer):
     def __init__(self, **kwargs):

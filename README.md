@@ -1,7 +1,7 @@
 # FaceRecognition
 Face Recognition/Verification with MTCNN and image similarity. 
 
-Project originally done in December 2022
+Project originally done in December 2022.
 Pictures of my face and CelebA dataset have been removed from the repo for privacy and size purposes; Positive & Anchor would've been filled with ~1500 images of my face, Negative would've
 been comprised of the CelebA dataset
 

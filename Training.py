@@ -56,6 +56,10 @@ def processFaces(directory):
         os.remove(os.path.join("UnprocessedData", directory, filename))
         print("success")
 
+processFaces("Anchor")
+processFaces("Negative")
+processFaces("Positive")
+
 
 anchor = tf.data.Dataset.list_files('Data/Anchor'+'\*.jpg').take(3000)
 anchor = anchor.shuffle(buffer_size=1582)
@@ -140,30 +144,23 @@ siamese_network = siameseNetwork()
 checkpointPrefix = os.path.join('./checkpoints', 'ckpt')
 checkpoint = tf.train.Checkpoint(optimzer=optimizer, siamese_network=siamese_network)
 
-def train_step(batch):
-    
-    with tf.GradientTape() as tape:     
-        X = batch[:2]
-        y = batch[2]
-        
-        yhat = siamese_network(X, training=True)
-        loss = binaryCrossentropy(y, yhat)
-        
-    grad = tape.gradient(loss, siamese_network.trainable_variables)
-    
-    optimizer.apply_gradients(zip(grad, siamese_network.trainable_variables))
 
 def train(data, epochs):
     for epoch in range(1, epochs+1):
         print('\n Epoch {}/{}'.format(epoch, epochs))    
         
         for batch in data:
-            train_step(batch)
-    
-        if epoch % 5 == 0: 
-            checkpoint.save(file_prefix=checkpointPrefix)
+            with tf.GradientTape() as tape:     
+                X = batch[:2]
+                y = batch[2]
+                
+                yhat = siamese_network(X, training=True)
+                loss = binaryCrossentropy(y, yhat)
         
-train(train_data, 25)
+            grad = tape.gradient(loss, siamese_network.trainable_variables)
+            optimizer.apply_gradients(zip(grad, siamese_network.trainable_variables))
+
+train(train_data, 50)
 siamese_network.save("siameseModel")
 
 

@@ -88,7 +88,6 @@ positives = tf.data.Dataset.zip((anchor, positive, tf.data.Dataset.from_tensor_s
 negatives = tf.data.Dataset.zip((anchor, negative, tf.data.Dataset.from_tensor_slices(tf.zeros(len(anchor)))))
 data = positives.concatenate(negatives)
 
-data = data.map(preprocessTwin)
 data = data.map(lambda img, img2, label: tf.py_function(preprocessTwin, inp=[img, img2, label], Tout=[tf.float32]))
 data = data.shuffle(10000)
 

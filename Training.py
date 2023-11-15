@@ -11,23 +11,26 @@ import uuid
 from mtcnn import MTCNN
 from PIL import Image
 
-# tool for filling anchor and positive data in UnprocessedData with picture of my face
-# cap = cv2.VideoCapture(0)
-# while True:
-#     ret, frame = cap.read()
-#     frame = frame[120:120+250, 200:200+250, :]
-#     cv2.imshow('Image', frame)
-    
-#     if cv2.waitKey(1) == ord('a'):
-#         imgname = os.path.join("UnprocessedData/Positive", '{}.jpg'.format(uuid.uuid1()))
-#         cv2.imwrite(imgname, frame)
-#         imgname = os.path.join("UnprocessedData/Anchor", '{}.jpg'.format(uuid.uuid1()))
-#         cv2.imwrite(imgname, frame)        
-            
-#     if cv2.waitKey(1) == ord('q'):
-#         break
-# cap.release()
-# cv2.destroyAllWindows()
+# fill anchor and positive data in UnprocessedData with face pictures
+def capture():
+    cap = cv2.VideoCapture(0)
+    while True:
+        ret, frame = cap.read()
+        frame = frame[120:120+250, 200:200+250, :]
+        cv2.imshow('Image', frame)
+        
+        if cv2.waitKey(1) == ord('a'):
+            imgname = os.path.join("UnprocessedData/Positive", '{}.jpg'.format(uuid.uuid1()))
+            cv2.imwrite(imgname, frame)
+            imgname = os.path.join("UnprocessedData/Anchor", '{}.jpg'.format(uuid.uuid1()))
+            cv2.imwrite(imgname, frame)        
+                
+        if cv2.waitKey(1) == ord('q'):
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+
+# capture()
 
 tf.config.run_functions_eagerly(True)
 
@@ -35,7 +38,7 @@ detector = MTCNN()
 binaryCrossentropy = tf.losses.BinaryCrossentropy() 
 optimizer = tf.keras.optimizers.Adam(0.0001)
 
-#mtcnn to draw box around only the face and eliminate potential interference brom background
+#mtcnn to draw box around only the face and eliminate interference brom background
 def detectFace(filePath, size=(100,100)):
     pixels = plt.imread(filePath)
     results = detector.detect_faces(pixels)

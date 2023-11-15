@@ -35,7 +35,7 @@ def detectFace(filePath, size=(100,100)):
     
     return face
 
-#validate that a picture if my face if it passes a similarity threshold for a certain percentage of test images
+#validate that a picture of my face if it passes a similarity threshold for a certain percentage of test images
 def verify(model, verification_threshold, detection_threshold):
     
     results = []
